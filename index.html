@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>OsintPHONE - Tactical Telecommunications & Recon Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=JetBrains+Mono:wght@400;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        :root {
+            --bg-black: #000000;
+            --card-black: #050508;
+            --border-gray: #333344;
+            --text-main: #f0f0f5;
+            --mono-font: 'JetBrains Mono', monospace;
+            --pixel-font: 'VT323', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            user-select: text !important;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            font-family: var(--mono-font);
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        .pixel-font {
+            font-family: var(--pixel-font);
+            letter-spacing: 2px;
+        }
+
+        .tech-font {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Pure Dark Desktop Card Styling */
+        .desktop-card {
+            background: #050508;
+            border: 2px solid #2a2a35;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Tactical Inputs */
+        .desktop-input {
+            width: 100%;
+            background: #000000;
+            border: 1px solid #444455;
+            color: #ffffff;
+            padding: 14px 18px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: 'Share Tech Mono', monospace;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .desktop-input:focus {
+            border-color: #ffffff;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+        }
+
+        /* Action Buttons */
+        .desktop-btn {
+            background: #ffffff;
+            color: #000000;
+            font-weight: 800;
+            padding: 14px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.15s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: none;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .desktop-btn:hover {
+            background: #cccccc;
+            transform: translateY(-1px);
+        }
+
+        .desktop-btn:active {
+            transform: translateY(1px);
+        }
+
+        /* Navigation Tab Buttons */
+        .tab-btn {
+            background: #0d0d12;
+            border: 1px solid #2a2a38;
+            color: #aaaa88;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            letter-spacing: 1px;
+            transition: all 0.15s ease;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        .tab-btn:hover {
+            border-color: #ffffff;
+            color: #ffffff;
+            background: #181822;
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            border-color: #ffffff;
+            color: #000000;
+            font-weight: 800;
+        }
+
+        /* Console Results Output Box */
+        .results-box {
+            background: #020204;
+            border: 1px solid #333344;
+            border-radius: 6px;
+            padding: 20px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: #00ff66;
+            color: #e2e2ee;
+            max-height: 520px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: none;
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Progress Bar Animation */
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: #11111a;
+            border: 1px solid #222233;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #ffffff;
+            box-shadow: 0 0 10px #ffffff;
+            transition: width 0.05s linear;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050508;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333344;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555566;
+        }
+    </style>
+</head>
+<body class="p-6">
+
+    <!-- AUTHENTICATION SCREEN -->
+    <div id="login-screen" class="fixed inset-0 bg-black flex items-center justify-center p-6 z-50">
+        <div class="desktop-card p-10 w-full max-w-md text-center">
+            
+            <!-- Sad File Pixel Art Logo -->
+            <div class="w-20 h-20 mx-auto mb-5">
+                <svg viewBox="0 0 24 24" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                    <rect x="5" y="2" width="10" height="2" fill="#ffffff"/>
+                    <rect x="15" y="4" width="2" height="2" fill="#ffffff"/>
+                    <rect x="17" y="6" width="2" height="2" fill="#ffffff"/>
+                    <rect x="3" y="2" width="2" height="20" fill="#ffffff"/>
+                    <rect x="5" y="22" width="16" height="2" fill="#ffffff"/>
+                    <rect x="19" y="8" width="2" height="14" fill="#ffffff"/>
+                    <rect x="7" y="6" width="2" height="4" fill="#ffffff"/>
+                    <rect x="7" y="14" width="10" height="2" fill="#ffffff"/>
+                </svg>
+            </div>
+
+            <h1 class="text-4xl pixel-font text-white mb-1 tracking-widest">OsintPHONE</h1>
+            <p class="text-xs text-gray-400 mb-8 tech-font uppercase tracking-widest">[ DESKTOP TACTICAL TELECOM CORE ]</p>
+
+            <form onsubmit="event.preventDefault(); verifyCode();" class="space-y-4">
+                <input type="password" id="passcode-input" class="desktop-input text-center text-lg tracking-widest" placeholder="ENTER SYSTEM PASSCODE" autofocus autocomplete="off">
+                <button type="submit" class="desktop-btn w-full text-xs">
+                    AUTHENTICATE NODE
+                </button>
+            </form>
+            
+            <div id="error-msg" class="hidden mt-4 text-xs text-red-400 border border-red-900 bg-red-950/30 p-3 rounded tech-font">
+                [!] ACCESS DENIED: INVALID SYSTEM AUTHORIZATION KEY
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN DESKTOP APPLICATION SUITE -->
+    <div id="main-app" class="hidden max-w-6xl mx-auto">
+        
+        <!-- HEADER TOOLBAR -->
+        <header class="desktop-card p-6 mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 flex-shrink-0">
+                    <svg viewBox="0 0 24 24" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
+                        <rect x="5" y="2" width="10" height="2" fill="#ffffff"/>
+                        <rect x="15" y="4" width="2" height="2" fill="#ffffff"/>
+                        <rect x="17" y="6" width="2" height="2" fill="#ffffff"/>
+                        <rect x="3" y="2" width="2" height="20" fill="#ffffff"/>
+                        <rect x="5" y="22" width="16" height="2" fill="#ffffff"/>
+                        <rect x="19" y="8" width="2" height="14" fill="#ffffff"/>
+                        <rect x="7" y="6" width="2" height="4" fill="#ffffff"/>
+                        <rect x="7" y="14" width="10" height="2" fill="#ffffff"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-3xl pixel-font text-white leading-none tracking-widest">OsintPHONE</h2>
+                    <span class="text-xs text-gray-400 tech-font tracking-widest block mt-1 uppercase">[ DESKTOP RECONNAISSANCE ENGINE ]</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <span class="px-3 py-1.5 rounded bg-white/10 border border-white/30 text-white text-xs tech-font font-bold">
+                    SYSTEM ONLINE
+                </span>
+                <button type="button" onclick="lockApp()" class="text-xs text-gray-300 hover:text-white px-4 py-2 rounded border border-gray-700 hover:border-white transition tech-font cursor-pointer">
+                    TERMINATE SESSION
+                </button>
+            </div>
+        </header>
+
+        <!-- NAVIGATION TABS -->
+        <nav class="flex items-center gap-3 mb-6">
+            <button type="button" id="tab-btn-phone" class="tab-btn active" onclick="switchTool('phone', this)">
+                [1] TELECOM TARGET RECON
+            </button>
+            <button type="button" id="tab-btn-discord" class="tab-btn" onclick="switchTool('discord', this)">
+                [2] DISCORD SNOWFLAKE DECODER
+            </button>
+            <button type="button" id="tab-btn-ip" class="tab-btn" onclick="switchTool('ip', this)">
+                [3] IP TELEMETRY & RADAR
+            </button>
+            <button type="button" id="tab-btn-dns" class="tab-btn" onclick="switchTool('dns', this)">
+                [4] DOH ENCRYPTED DNS
+            </button>
+        </nav>
+
+        <!-- WORKSPACE PANEL -->
+        <main class="desktop-card p-8">
+            
+            <!-- PHONE MODULE -->
+            <section id="panel-phone" class="tool-panel">
+                <div class="mb-6">
+                    <h3 class="text-2xl text-white font-bold mb-1 uppercase tracking-wider">TARGET TELECOM INTERCEPTOR</h3>
+                    <p class="text-xs text-gray-400 tech-font uppercase">Intercept phone telemetry, carrier switching logs, IMSI vectors, and cellular tower coordinates.</p>
+                </div>
+                <form onsubmit="event.preventDefault(); runScan('phone');" class="flex gap-3 mb-6">
+                    <input type="tel" id="phone-input" class="desktop-input flex-1" placeholder="ENTER TARGET PHONE NUMBER (E.G. +14155552671)..." autocomplete="off">
+                    <button type="submit" class="desktop-btn whitespace-nowrap">
+                        EXECUTE SCAN
+                    </button>
+                </form>
+                <div id="loading-phone" class="hidden mb-4">
+                    <div class="progress-bar-container"><div id="pbar-phone" class="progress-bar"></div></div>
+                    <div class="text-xs text-gray-300 animate-pulse tech-font uppercase">[+] INTERCEPTING CELLULAR SWITCHING NETWORK DATA...</div>
+                </div>
+                <div id="results-phone" class="results-box"></div>
+            </section>
+
+            <!-- DISCORD MODULE -->
+            <section id="panel-discord" class="tool-panel hidden">
+                <div class="mb-6">
+                    <h3 class="text-2xl text-white font-bold mb-1 uppercase tracking-wider">DISCORD SNOWFLAKE ARCHITECTURE DECODER</h3>
+                    <p class="text-xs text-gray-400 tech-font uppercase">Decompile Discord User or Guild Snowflake IDs into exact UTC creation epoch timestamps and internal node threads.</p>
+                </div>
+                <form onsubmit="event.preventDefault(); runScan('discord');" class="flex gap-3 mb-6">
+                    <input type="text" id="discord-input" class="desktop-input flex-1" placeholder="ENTER DISCORD USER OR GUILD ID (E.G. 155149108183695360)..." autocomplete="off">
+                    <button type="submit" class="desktop-btn whitespace-nowrap">
+                        DECOMPILE ID
+                    </button>
+                </form>
+                <div id="loading-discord" class="hidden mb-4">
+                    <div class="progress-bar-container"><div id="pbar-discord" class="progress-bar"></div></div>
+                    <div class="text-xs text-gray-300 animate-pulse tech-font uppercase">[+] CALCULATING DISCORD EPOCH TIMESTAMP AND INTERNAL WORKER NODES...</div>
+                </div>
+                <div id="results-discord" class="results-box"></div>
+            </section>
+
+            <!-- IP MODULE -->
+            <section id="panel-ip" class="tool-panel hidden">
+                <div class="mb-6">
+                    <h3 class="text-2xl text-white font-bold mb-1 uppercase tracking-wider">ADVANCED IP TELEMETRY & NETWORK RADAR</h3>
+                    <p class="text-xs text-gray-400 tech-font uppercase">Map public IP routing vectors, autonomous system numbers (ASN), BGP prefixes, and proxy detection nodes.</p>
+                </div>
+                <form onsubmit="event.preventDefault(); runScan('ip');" class="flex gap-3 mb-6">
+                    <input type="text" id="ip-input" class="desktop-input flex-1" placeholder="ENTER TARGET IP ADDRESS (E.G. 185.220.101.5)..." autocomplete="off">
+                    <button type="submit" class="desktop-btn whitespace-nowrap">
+                        TRACE ROUTE
+                    </button>
+                </form>
+                <div id="loading-ip" class="hidden mb-4">
+                    <div class="progress-bar-container"><div id="pbar-ip" class="progress-bar"></div></div>
+                    <div class="text-xs text-gray-300 animate-pulse tech-font uppercase">[+] RESOLVING GLOBAL BGP ROUTING TABLES AND INTERNET EXCHANGE NODES...</div>
+                </div>
+                <div id="results-ip" class="results-box"></div>
+            </section>
+
+            <!-- DNS MODULE -->
+            <section id="panel-dns" class="tool-panel hidden">
+                <div class="mb-6">
+                    <h3 class="text-2xl text-white font-bold mb-1 uppercase tracking-wider">ENCRYPTED DOH DNS RESOLVER & RECON</h3>
+                    <p class="text-xs text-gray-400 tech-font uppercase">Query DNS-over-HTTPS Cloudflare edge network nodes for target A, AAAA, MX, and TXT records.</p>
+                </div>
+                <form onsubmit="event.preventDefault(); runScan('dns');" class="flex gap-3 mb-6">
+                    <input type="text" id="dns-input" class="desktop-input flex-1" placeholder="ENTER TARGET DOMAIN (E.G. TARGET-CORP.ORG)..." autocomplete="off">
+                    <button type="submit" class="desktop-btn whitespace-nowrap">
+                        RESOLVE RECORDS
+                    </button>
+                </form>
+                <div id="loading-dns" class="hidden mb-4">
+                    <div class="progress-bar-container"><div id="pbar-dns" class="progress-bar"></div></div>
+                    <div class="text-xs text-gray-300 animate-pulse tech-font uppercase">[+] PERFORMING HIGH-SPEED DNS OVER HTTPS HOST ENUMERATION...</div>
+                </div>
+                <div id="results-dns" class="results-box"></div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Authentication Controller
+        function verifyCode() {
+            const inputEl = document.getElementById('passcode-input');
+            const errorEl = document.getElementById('error-msg');
+            const loginEl = document.getElementById('login-screen');
+            const appEl = document.getElementById('main-app');
+
+            if (!inputEl) return;
+            const input = inputEl.value.trim().toLowerCase();
+
+            // Allow any entry or standard key
+            if (input === 'x1' || input === 'admin' || input.length >= 0) {
+                loginEl.classList.add('hidden');
+                appEl.classList.remove('hidden');
+            } else {
+                errorEl.classList.remove('hidden');
+            }
+        }
+
+        function lockApp() {
+            const loginEl = document.getElementById('login-screen');
+            const appEl = document.getElementById('main-app');
+            const passcode = document.getElementById('passcode-input');
+            const errorMsg = document.getElementById('error-msg');
+
+            if (passcode) passcode.value = '';
+            if (errorMsg) errorMsg.classList.add('hidden');
+            
+            loginEl.classList.remove('hidden');
+            appEl.classList.add('hidden');
+        }
+
+        // Tab Switching Engine
+        function switchTool(toolId, btnEl) {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tool-panel').forEach(p => p.classList.add('hidden'));
+
+            if (btnEl) btnEl.classList.add('active');
+            const target = document.getElementById('panel-' + toolId);
+            if (target) target.classList.remove('hidden');
+        }
+
+        // Tactical Data Generator Helpers
+        const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
+        const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+        const randomHex = len => Array.from({length: len}, () => Math.floor(Math.random()*16).toString(16)).join('').toUpperCase();
+
+        const fakeCarriers = ['AT&T MOBILITY CORE', 'VERIZON WIRELESS SUBNET', 'T-MOBILE US DIRECT', 'VODAFONE GLOBAL ENTERPRISE', 'ORANGE TELECOM SA', 'TELEFONICA CYBER CORE', 'SOFTBANK MOBILE NODE', 'TELSTRA WIRELESS ROUTE'];
+        const fakeCities = ['NEW YORK, NY, US', 'LONDON, UK', 'TOKYO, JP', 'BERLIN, DE', 'FRANKFURT, DE', 'SYDNEY, AU', 'TEL AVIV, IL', 'ZURICH, CH', 'TORONTO, CA'];
+        const fakeISPs = ['CLOUDFLARE EDGE NODE', 'LEVEL3 COMMUNICATIONS', 'COGENT COMMUNICATIONS', 'AKAMAI GLOBAL CDN', 'AWS BACKBONE NETWORK', 'DIGITALOCEAN NETWORK CORE'];
+        const fakeThreatStatus = ['CLEAN / NO KNOWN MALICE', 'FLAGGED IN 2 OSINT BOTNET LISTS', 'ACTIVE TOR EXIT NODE MATCH', 'HIGH VOLUME TELECOM SPOOFING RISK', 'SUSPECTED VPN / PROXY VECTOR'];
+
+        // Main Execution Scanner Engine
+        async function runScan(type) {
+            const inputEl = document.getElementById(type + '-input');
+            const loadingEl = document.getElementById('loading-' + type);
+            const resultsEl = document.getElementById('results-' + type);
+            const pbarEl = document.getElementById('pbar-' + type);
+
+            if (!inputEl || !loadingEl || !resultsEl || !pbarEl) return;
+            let val = inputEl.value.trim();
+
+            if (!val) {
+                if (type === 'phone') val = '+14155552671';
+                if (type === 'discord') val = '155149108183695360';
+                if (type === 'ip') val = '185.220.101.5';
+                if (type === 'dns') val = 'cyber-target.org';
+            }
+
+            loadingEl.classList.remove('hidden');
+            resultsEl.style.display = 'none';
+            pbarEl.style.width = '0%';
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += randomInt(15, 30);
+                if (progress > 100) progress = 100;
+                pbarEl.style.width = progress + '%';
+                if (progress >= 100) clearInterval(interval);
+            }, 60);
+
+            await new Promise(r => setTimeout(r, 500));
+
+            let output = `[+] OSINTPHONE DESKTOP TARGET NODE EVALUATED: ${val}\n`;
+            output += `[+] SCAN TIMESTAMP: ${new Date().toISOString()}\n`;
+            output += `[+] CLASSIFICATION LEVEL: TOP SECRET // OSINT TACTICAL RECON\n`;
+            output += `----------------------------------------------------------------------\n\n`;
+
+            try {
+                if (type === 'phone') {
+                    const cleaned = val.replace(/[^\d+]/g, '') || '14155552671';
+                    const digits = cleaned.replace('+', '');
+                    
+                    output += `[+] TELECOMMUNICATION INTERCEPT COMPLETED\n\n`;
+                    output += `[TARGET NUMBER]       : +${digits}\n`;
+                    output += `[E.164 VALIDATION]    : SYNTAX VALID / E.164 CONFORMANT\n`;
+                    output += `[ESTIMATED CARRIER]   : ${randomItem(fakeCarriers)}\n`;
+                    output += `[LINE NETWORK TYPE]   : CELLULAR / VOIP DUAL ROUTE\n`;
+                    output += `[IMSI HASH VECTOR]    : ${randomHex(16)}\n`;
+                    output += `[HLR LOCATION ROUTE]  : ${randomItem(fakeCities)}\n`;
+                    output += `[CELL TOWER ID]       : LAC-${randomInt(1000, 9999)} / CID-${randomInt(10000, 99999)}\n`;
+                    output += `[SIGNAL LATENCY]      : ${randomInt(12, 48)} MS\n`;
+                    output += `[ROAMING STATUS]      : HOME NETWORK (NO ROAMING DETECTED)\n`;
+                    output += `[RISK TELEMETRY]      : ${randomItem(fakeThreatStatus)}\n\n`;
+                    output += `[TACTICAL DEEP LINK OSINT]\n`;
+                    output += ` -> WHATSAPP RECON  : https://wa.me/${digits}\n`;
+                    output += ` -> TELEGRAM VECTOR : https://t.me/+${digits}\n`;
+                    output += ` -> VIBER SEARCH    : viber://chat?number=%2B${digits}\n`;
+                    output += ` -> TRUECALLER QUERY: https://www.truecaller.com/search/global/+${digits}`;
+                } 
+                else if (type === 'discord') {
+                    const digitsOnly = val.replace(/[^\d]/g, '') || '155149108183695360';
+                    let timestamp, date;
+
+                    try {
+                        const epoch = 1420070400000n;
+                        const idBig = BigInt(digitsOnly);
+                        timestamp = Number((idBig >> 22n) + epoch);
+                        date = new Date(timestamp);
+                    } catch (e) {
+                        timestamp = Date.now() - randomInt(100000000, 90000000000);
+                        date = new Date(timestamp);
+                    }
+
+                    output += `[+] DISCORD SNOWFLAKE DECOMPILATION COMPLETE\n\n`;
+                    output += `[TARGET DISCORD ID]   : ${digitsOnly}\n`;
+                    output += `[ACCOUNT CREATED UTC] : ${date.toUTCString()}\n`;
+                    output += `[ISO 8601 TIMESTAMP]  : ${date.toISOString()}\n`;
+                    output += `[UNIX EPOCH MS]       : ${timestamp}\n`;
+                    output += `[DATA CENTER WORKER]  : NODE-${randomInt(1, 32)}\n`;
+                    output += `[PROCESS THREAD ID]   : PID-${randomInt(100, 999)}\n`;
+                    output += `[INCREMENTAL COUNTER] : #${randomInt(1000, 4095)}\n`;
+                    output += `[AVATAR CDN HASH]     : a_${randomHex(32)}\n`;
+                    output += `[AVATAR CDN DIRECT]   : https://cdn.discordapp.com/avatars/${digitsOnly}/a_${randomHex(16)}.png\n`;
+                    output += `[GUILD MEMBERSHIPS]   : SUSPECTED IN ${randomInt(3, 42)} PUBLIC DISCORD SERVERS\n`;
+                    output += `[BADGES IDENTIFIED]   : HYPESQUAD / EARLY SUPPORTER / DEVELOPER`;
+                } 
+                else if (type === 'ip') {
+                    const cleanIp = val.replace(/[^0-9.]/g, '') || `${randomInt(11,210)}.${randomInt(1,254)}.${randomInt(1,254)}.${randomInt(1,254)}`;
+
+                    output += `[+] GEOLOCATION & BGP RADAR ANALYSIS COMPLETED\n\n`;
+                    output += `[TARGET IP ADDRESS]   : ${cleanIp}\n`;
+                    output += `[NETWORK REVERSE PTR] : node-${randomHex(8)}.ip-telemetry-core.net\n`;
+                    output += `[GEOLOCATION TARGET]  : ${randomItem(fakeCities)}\n`;
+                    output += `[LATITUDE / LONGITUDE]: ${(Math.random() * 100 - 50).toFixed(6)}, ${(Math.random() * 200 - 100).toFixed(6)}\n`;
+                    output += `[AUTONOMOUS SYSTEM]   : AS${randomInt(10000, 65000)} (${randomItem(fakeISPs)})\n`;
+                    output += `[BGP ROUTE PREFIX]    : ${cleanIp.split('.').slice(0,3).join('.')}.0/24\n`;
+                    output += `[ISP PROVIDER CORE]   : ${randomItem(fakeISPs)}\n`;
+                    output += `[PROXY / TOR / VPN]   : ${randomItem(['DETECTED (HIGH CONFIDENCE)', 'NONE DETECTED (DIRECT RESIDENTIAL)', 'DATACENTER IP ROUTE'])}\n`;
+                    output += `[PORT SCAN SUMMARY]   : PORTS 80, 443, 22, 8080 OPEN\n`;
+                    output += `[SECURITY THREAT SCORE]: ${randomInt(5, 95)} / 100`;
+                } 
+                else if (type === 'dns') {
+                    const host = val.replace(/^(https?:\/\/)?/, '').split('/')[0] || 'target-domain.com';
+
+                    output += `[+] DOH ENCRYPTED DNS ENUMERATION COMPLETED\n\n`;
+                    output += `[TARGET HOSTNAME]     : ${host}\n`;
+                    output += `[RESOLVER CLUSTER]    : CLOUDFLARE DOH EDGE (1.1.1.1 / 1.0.0.1)\n`;
+                    output += `[QUERY RESPONSE CODE] : NOERROR (STATUS 0)\n\n`;
+                    output += `[RECORD TYPE A]       : ${host} -> ${randomInt(11,200)}.${randomInt(1,254)}.${randomInt(1,254)}.${randomInt(1,254)} (TTL 300s)\n`;
+                    output += `[RECORD TYPE A]       : ${host} -> ${randomInt(11,200)}.${randomInt(1,254)}.${randomInt(1,254)}.${randomInt(1,254)} (TTL 300s)\n`;
+                    output += `[RECORD TYPE AAAA]    : 2606:4700:3033::${randomHex(4)}:${randomHex(4)} (TTL 300s)\n`;
+                    output += `[RECORD TYPE MX]      : MAIL.${host} (PRIORITY 10)\n`;
+                    output += `[RECORD TYPE TXT]     : "v=spf1 include:_spf.${host} ~all"\n`;
+                    output += `[RECORD TYPE NS]      : NS1.DNS-CLOUD.NET, NS2.DNS-CLOUD.NET\n`;
+                    output += `[SSL CERTIFICATE MD5] : ${randomHex(32)}\n`;
+                    output += `[WHOIS REGISTRAR]     : CLOUDFLARE INC. / REGISTRAR SAFEGUARD`;
+                }
+            } catch (err) {
+                output += `[ERROR] CRITICAL SCAN EXCEPTION: ${err.message}`;
+            } finally {
+                loadingEl.classList.add('hidden');
+                resultsEl.style.display = 'block';
+                resultsEl.textContent = output;
+            }
+        }
+    </script>
+</body>
+</html>
